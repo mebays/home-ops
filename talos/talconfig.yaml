@@ -23,6 +23,8 @@ nodes:
     ipAddress: "192.168.1.11"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -55,6 +57,8 @@ nodes:
     ipAddress: "192.168.1.12"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -87,6 +91,8 @@ nodes:
     ipAddress: "192.168.1.13"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -117,6 +123,8 @@ nodes:
     ipAddress: "192.168.1.14"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -147,6 +155,8 @@ nodes:
     ipAddress: "192.168.1.21"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -154,7 +164,9 @@ nodes:
         name: rpi_generic
         options:
           configTxtAppend: |-
-            dtoverlay=rpi-poe-plus,poe_fan_temp0=50000,dtparam=poe_fan_temp1=60000,dtparam=poe_fan_temp2=70000,dtparam=poe_fan_temp3=80000
+            dtparam=i2c_arm=on,i2c_arm=baudrate=400000
+            dtoverlay=gpio-fan,gpiopin=14,temp=60000
+            dtoverlay=gpio-shudown,gpio_pin=4,active_low=1,gpio_pull=up
       customization:
         systemExtensions:
           officialExtensions:
@@ -179,6 +191,8 @@ nodes:
     ipAddress: "192.168.1.22"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -211,6 +225,8 @@ nodes:
     ipAddress: "192.168.1.23"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
@@ -243,6 +259,8 @@ nodes:
     ipAddress: "192.168.1.24"
     installDisk: "/dev/sda"
     machineSpec:
+      mode: metal
+      arch: arm64
       secureboot: false
     schematic:
       overlay:
