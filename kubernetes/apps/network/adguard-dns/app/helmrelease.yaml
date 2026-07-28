@@ -48,6 +48,7 @@ spec:
           - name: DRY_RUN
             value: "false"
     extraArgs:
+      - --annotation-prefix=internal.${SECRET_DOMAIN}/
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-internal
