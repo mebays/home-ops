@@ -22,8 +22,6 @@ spec:
             env:
               NO_AUTOUPDATE: true
               TUNNEL_METRICS: 0.0.0.0:8080
-              TUNNEL_POST_QUANTUM: true # disable when using http2
-              TUNNEL_TRANSPORT_PROTOCOL: quic # or http2
             envFrom:
               - secretRef:
                   name: cloudflare-tunnel-secret
@@ -72,7 +70,9 @@ spec:
               - hostname: "*.${SECRET_DOMAIN}"
                 originRequest:
                   http2Origin: true
+                  keepAliveTimeout: 3600s
                   originServerName: external.${SECRET_DOMAIN}
+                  tcpKeepAlive: 7200s
                 service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
               - service: http_status:404
     persistence:
