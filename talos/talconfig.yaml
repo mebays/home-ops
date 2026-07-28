@@ -26,7 +26,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
+    schematic: &schematic1
       overlay:
         image: siderolabs/sbc-raspberrypi
         name: rpi_generic
@@ -38,8 +38,7 @@ nodes:
           officialExtensions:
             - siderolabs/iscsi-tools
             - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+            - siderolabs/vc4
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -60,20 +59,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-        options:
-          configTxtAppend: |-
-            dtoverlay=rpi-poe-plus,poe_fan_temp0=50000,dtparam=poe_fan_temp1=60000,dtparam=poe_fan_temp2=70000,dtparam=poe_fan_temp3=80000
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+    schematic: *schematic1
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -94,20 +80,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-        options:
-          configTxtAppend: |-
-            dtoverlay=rpi-poe-plus,poe_fan_temp0=50000,dtparam=poe_fan_temp1=60000,dtparam=poe_fan_temp2=70000,dtparam=poe_fan_temp3=80000
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+    schematic: *schematic1
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
@@ -126,20 +99,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-        options:
-          configTxtAppend: |-
-            dtoverlay=rpi-poe-plus,poe_fan_temp0=50000,dtparam=poe_fan_temp1=60000,dtparam=poe_fan_temp2=70000,dtparam=poe_fan_temp3=80000
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+    schematic: *schematic1
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
@@ -158,7 +118,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
+    schematic: &schematic2
       overlay:
         image: siderolabs/sbc-raspberrypi
         name: rpi_generic
@@ -166,6 +126,7 @@ nodes:
           configTxtAppend: |-
             enable_uart=0
             dtparam=i2c_arm=on,i2c_arm=baudrate=400000
+            dtparam=i2c1=on
             dtoverlay=gpio-fan,gpiopin=14,temp=60000
             dtoverlay=gpio-shudown,gpio_pin=4,active_low=1,gpio_pull=up
       customization:
@@ -173,8 +134,8 @@ nodes:
           officialExtensions:
             - siderolabs/iscsi-tools
             - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+            - siderolabs/vc4
+            - siderolabs/util-linux-tools
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -188,6 +149,11 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.1.10"
+    patches:
+      - |-
+        machine:
+          nodeLabels:
+            app.kubernetes.io/name: rpi-display
   - hostname: "pi-kube-2-b"
     ipAddress: "192.168.1.22"
     installDisk: "/dev/sda"
@@ -195,23 +161,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-        options:
-          configTxtAppend: |-
-            enable_uart=0
-            dtparam=i2c_arm=on,i2c_arm=baudrate=400000
-            dtoverlay=gpio-fan,gpiopin=14,temp=60000
-            dtoverlay=gpio-shudown,gpio_pin=4,active_low=1,gpio_pull=up
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+    schematic: *schematic2
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
@@ -223,6 +173,11 @@ nodes:
           - gateway: "192.168.0.1"
             network: 0.0.0.0/0
         mtu: 1500
+    patches:
+      - |-
+        machine:
+          nodeLabels:
+            app.kubernetes.io/name: rpi-display
   - hostname: "pi-kube-2-c"
     ipAddress: "192.168.1.23"
     installDisk: "/dev/sda"
@@ -230,23 +185,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-        options:
-          configTxtAppend: |-
-            enable_uart=0
-            dtparam=i2c_arm=on,i2c_arm=baudrate=400000
-            dtoverlay=gpio-fan,gpiopin=14,temp=60000
-            dtoverlay=gpio-shudown,gpio_pin=4,active_low=1,gpio_pull=up
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nfs-utils
-
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+    schematic: *schematic2
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
@@ -258,6 +197,11 @@ nodes:
           - gateway: "192.168.0.1"
             network: 0.0.0.0/0
         mtu: 1500
+    patches:
+      - |-
+        machine:
+          nodeLabels:
+            app.kubernetes.io/name: rpi-display
   - hostname: "pi-kube-2-d"
     ipAddress: "192.168.1.24"
     installDisk: "/dev/sda"
@@ -265,22 +209,7 @@ nodes:
       mode: metal
       arch: arm64
       secureboot: false
-    schematic:
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-        options:
-          configTxtAppend: |-
-            enable_uart=0
-            dtparam=i2c_arm=on,i2c_arm=baudrate=400000
-            dtoverlay=gpio-fan,gpiopin=14,temp=60000
-            dtoverlay=gpio-shudown,gpio_pin=4,active_low=1,gpio_pull=up
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nfs-utils
-    # talosImageURL: factory.talos.dev/installer/e5a6de06bb5da37f17e81603811875e6dfc3df647361acf92fc4f995469b8036
+    schematic: *schematic2
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
@@ -292,6 +221,11 @@ nodes:
           - gateway: "192.168.0.1"
             network: 0.0.0.0/0
         mtu: 1500
+    patches:
+      - |-
+        machine:
+          nodeLabels:
+            app.kubernetes.io/name: rpi-display
 
 # Global patches
 patches:
