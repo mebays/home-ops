@@ -55,6 +55,7 @@ spec:
     triggerLoopOnEvent: true
     policy: sync
     sources:
+      - service
       - gateway-httproute
     txtPrefix: k8s.
     txtOwnerId: default
