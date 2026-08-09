@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://github.com/budimanjojo/talhelper/blob/master/pkg/config/schemas/talconfig.json
 ---
 clusterName: kubernetes
 
@@ -38,6 +39,7 @@ nodes:
           officialExtensions:
             - siderolabs/iscsi-tools
             - siderolabs/nfs-utils
+            - siderolabs/util-linux-tools
             - siderolabs/vc4
     controlPlane: true
     networkInterfaces:
@@ -82,6 +84,37 @@ nodes:
       secureboot: false
     schematic: *schematic1
     controlPlane: false
+    volumes: &volumes
+      - name: EPHEMERAL
+        provisioning:
+          maxSize: 100GiB
+          grow: false
+    userVolumes: &userVolumes
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: system_disk
+          minSize: 800GiB
+          maxSize: 800GiB
+          grow: false
+    patches:
+      - &longhorn-node |-
+        machine:
+          kernel:
+            modules:
+              # Required by Longhorn's V1 iSCSI frontend.
+              - name: iscsi_tcp
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/longhorn
+                type: bind
+                source: /var/mnt/longhorn
+                options:
+                  - bind
+                  - rshared
+                  - rw
+          nodeLabels:
+            node.longhorn.io/create-default-disk: "true"
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "d8:3a:dd:8a:4b:29"
@@ -101,6 +134,10 @@ nodes:
       secureboot: false
     schematic: *schematic1
     controlPlane: false
+    volumes: *volumes
+    userVolumes: *userVolumes
+    patches:
+      - *longhorn-node
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "d8:3a:dd:8a:48:61"
@@ -128,7 +165,7 @@ nodes:
             dtparam=i2c_arm=on,i2c_arm=baudrate=400000
             dtparam=i2c1=on
             dtoverlay=gpio-fan,gpiopin=14,temp=60000
-            dtoverlay=gpio-shudown,gpio_pin=4,active_low=1,gpio_pull=up
+            dtoverlay=gpio-shutdown,gpio_pin=4,active_low=1,gpio_pull=up
       customization:
         systemExtensions:
           officialExtensions:
@@ -163,6 +200,8 @@ nodes:
       secureboot: false
     schematic: *schematic2
     controlPlane: false
+    volumes: *volumes
+    userVolumes: *userVolumes
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "d8:3a:dd:6e:87:9a"
@@ -174,6 +213,7 @@ nodes:
             network: 0.0.0.0/0
         mtu: 1500
     patches:
+      - *longhorn-node
       - |-
         machine:
           nodeLabels:
@@ -187,6 +227,8 @@ nodes:
       secureboot: false
     schematic: *schematic2
     controlPlane: false
+    volumes: *volumes
+    userVolumes: *userVolumes
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:33:56:41"
@@ -198,6 +240,7 @@ nodes:
             network: 0.0.0.0/0
         mtu: 1500
     patches:
+      - *longhorn-node
       - |-
         machine:
           nodeLabels:
@@ -211,6 +254,8 @@ nodes:
       secureboot: false
     schematic: *schematic2
     controlPlane: false
+    volumes: *volumes
+    userVolumes: *userVolumes
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "2c:cf:67:33:55:ec"
@@ -222,6 +267,7 @@ nodes:
             network: 0.0.0.0/0
         mtu: 1500
     patches:
+      - *longhorn-node
       - |-
         machine:
           nodeLabels:

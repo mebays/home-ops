@@ -7,7 +7,7 @@ kubernetes_dir := justfile_dir() + '/kubernetes'
 
 [private]
 default:
-    just bootstrap -l
+    just --list bootstrap
 
 [doc('Bootstrap the Talos cluster')]
 [group('bootstrap')]

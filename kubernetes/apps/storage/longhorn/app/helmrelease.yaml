@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: longhorn
+  interval: 1h
+  values:
+    defaultSettings:
+      createDefaultDiskLabeledNodes: true
+      defaultDataPath: /var/mnt/longhorn
+      defaultReplicaCount: 3
+      storageMinimalAvailablePercentage: 25
+      storageReservedPercentageForDefaultDisk: 0
+    persistence:
+      defaultClass: true
+      defaultClassReplicaCount: 3
+      reclaimPolicy: Delete
