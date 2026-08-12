@@ -190,7 +190,7 @@ nodes:
       - |-
         machine:
           nodeLabels:
-            app.kubernetes.io/name: rpi-display
+            org.mebays/rpi-display: true
   - hostname: "pi-kube-2-b"
     ipAddress: "192.168.1.22"
     installDisk: "/dev/sda"
@@ -217,7 +217,7 @@ nodes:
       - |-
         machine:
           nodeLabels:
-            app.kubernetes.io/name: rpi-display
+            org.mebays/rpi-display: true
   - hostname: "pi-kube-2-c"
     ipAddress: "192.168.1.23"
     installDisk: "/dev/sda"
@@ -244,7 +244,7 @@ nodes:
       - |-
         machine:
           nodeLabels:
-            app.kubernetes.io/name: rpi-display
+            org.mebays/rpi-display: true
   - hostname: "pi-kube-2-d"
     ipAddress: "192.168.1.24"
     installDisk: "/dev/sda"
@@ -271,7 +271,7 @@ nodes:
       - |-
         machine:
           nodeLabels:
-            app.kubernetes.io/name: rpi-display
+            org.mebays/rpi-display: true
 
 # Global patches
 patches:
