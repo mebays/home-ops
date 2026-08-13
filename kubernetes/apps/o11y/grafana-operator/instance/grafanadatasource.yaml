@@ -13,4 +13,4 @@ spec:
     name: prometheus
     access: proxy
     isDefault: true
-    url: http://prometheus-operated.{{ .Release.Namespace }}.svc.cluster.local:9090
+    url: http://prometheus-operated.o11y.svc.cluster.local:9090
