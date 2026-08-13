@@ -8,4 +8,5 @@ resources:
   - ./flux-system
   - ./kube-system
   - ./network
+  - ./o11y
   - ./storage
