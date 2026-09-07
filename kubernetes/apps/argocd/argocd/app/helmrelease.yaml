@@ -26,6 +26,8 @@ spec:
       replicas: 2
       httproute:
         enabled: true
+        hostnames:
+          - "argocd.${SECRET_DOMAIN}"
         parentRefs:
           - name: envoy-internal
             namespace: network
