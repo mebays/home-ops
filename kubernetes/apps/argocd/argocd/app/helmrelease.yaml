@@ -1,0 +1,31 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: argocd
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: argocd
+  interval: 1h
+  values:
+    redis-ha:
+      enabled: true
+    controller:
+      replicas: 1
+    repoServer:
+      replicas: 2
+    applicationSet:
+      replicas: 2
+    global:
+      domain: argocd.${SECRET_DOMAIN}
+    configs:
+      params:
+        server.insecure: true
+    server:
+      replicas: 2
+      httproute:
+        enabled: true
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
