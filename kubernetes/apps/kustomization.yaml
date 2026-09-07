@@ -10,3 +10,4 @@ resources:
   - ./network
   - ./o11y
   - ./storage
+  - ./argocd
