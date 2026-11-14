@@ -4,6 +4,7 @@
   schedule: ["every weekend"],
   lockFileMaintenance: {
     enabled: true,
+    automerge: true,
     schedule: ["before 3am on the first day of the month"],
     commitMessageExtra: "({{manager}})",
     additionalBranchPrefix: "{{manager}}-",
@@ -17,6 +18,7 @@
       matchManagers: ["github-actions"],
       groupName: "github-actions",
       minimumReleaseAge: "3 days",
+      automerge: true,
     },
     {
       description: "Mise Tools Group",
@@ -50,10 +52,12 @@
     {
       matchUpdateTypes: ["minor"],
       addLabels: ["type/minor"],
+      automerge: true,
     },
     {
       matchUpdateTypes: ["patch"],
       addLabels: ["type/patch"],
+      automerge: true,
     },
     {
       matchUpdateTypes: ["digest"],
@@ -62,14 +66,17 @@
     {
       matchDatasources: ["docker"],
       addLabels: ["renovate/container"],
+      automerge: true,
     },
     {
       matchDatasources: ["helm"],
       addLabels: ["renovate/helm"],
+      automerge: true,
     },
     {
       matchManagers: ["github-actions"],
       addLabels: ["renovate/github-action"],
+      automerge: true,
     },
     {
       matchDatasources: ["github-releases"],
